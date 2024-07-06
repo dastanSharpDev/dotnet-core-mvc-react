@@ -1,18 +1,22 @@
 import React from 'react'
 import PaymentChart from '../../components/PaymentChart/PaymentChart'
+import { useGetChartDataQuery } from '../../redux/api';
 
-export const FinancesPage = () => {
-  const chartData = [
-    { quarter: '2023Q4', Monthly: 1200, Quarterly: 1000, Yearly: 400 },
-    { quarter: '2024Q1', Monthly: 1600, Quarterly: 1000, Yearly: 200 },
-    { quarter: '2024Q2', Monthly: 1300, Quarterly: 1300, Yearly: 400 },
-    { quarter: '2024Q3', Monthly: 700, Quarterly: 1300, Yearly: 100 },
-  ];
+export const FinancesPage: React.FC = () => {
+  const { data: chartData, error, isLoading } = useGetChartDataQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error loading data</div>;
+  }
 
   return (
     <div>
       FinancesPage
-      <PaymentChart data={chartData} />
+      {chartData && <PaymentChart data={chartData} />}
     </div>
-  )
-}
+  );
+};
